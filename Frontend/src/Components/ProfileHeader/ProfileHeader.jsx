@@ -76,10 +76,9 @@ const ProfileHeader = ({}) => {
       <div className="profile-header">
         <div className="profile-header_image">
           <img
-            src={`https://gateway.pinata.cloud/ipfs/${profilePic.substring(7)}`}
+            src={`https://gateway.pinata.cloud/ipfs/${profilePic.substring(6)}`}
             alt="Profile"
           />
-         {console.log("Hedaer", profilePic)};
         </div>
         <div className="profile-header_content">
           <div className="profile-header_content-name-edit">
@@ -91,7 +90,9 @@ const ProfileHeader = ({}) => {
               className={
                 connectedAccount.toLowerCase() === address.toLowerCase()
                   ? "d-none"
-                  : "btn-f"
+                  : isFollowingBtn
+                  ? "btn-f"
+                  : "btn-b"
               }
             >
               {isFollowingBtn ? "Unfollow" : "Follow"}

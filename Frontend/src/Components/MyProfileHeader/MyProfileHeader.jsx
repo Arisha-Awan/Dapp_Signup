@@ -30,7 +30,6 @@ const MyProfileHeader = ({}) => {
     getFollowersList();
     getMyFollowingsList();
     getMyProfilePost(connectedAccount);
-    GetUserName();
   }, [contract]);
 
   // const { username, address } = useParams();
@@ -60,9 +59,6 @@ const MyProfileHeader = ({}) => {
             <p id="profile-name" className="bold-5 size-l">
               {currentUsername}
             </p>
-            <button className="btn-Edit" onClick={() => navigate("/edit")}>
-              Edit
-            </button>
           </div>
           <div className="profile-header_content-info">
             <div>

@@ -12,7 +12,7 @@ const PostCard = ({
   likeCount,
   currentUserProfile,
 }) => {
-  const { GetProfilePic, contract } = useContext(InscribleContext);
+  const { contract } = useContext(InscribleContext);
   const navigate = useNavigate();
   const [postUserPic, setPostUserPic] = useState("");
 
@@ -25,11 +25,8 @@ const PostCard = ({
         console.log(error);
       }
     };
-    console.log("Useeffffffftttt");
     fetchProfilePic();
   }, []);
-
-
 
   const handleClick = () => {
     navigate(
@@ -55,7 +52,7 @@ const PostCard = ({
           {postUserPic && (
             <img
               src={`https://gateway.pinata.cloud/ipfs/${postUserPic.substring(
-                7
+                6
               )}`}
               alt="Profile"
             />

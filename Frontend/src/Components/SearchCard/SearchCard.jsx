@@ -27,7 +27,7 @@ const SearchCard = ({
       <div className="search-card-header" onClick={handleClick}>
         {profilePic && (
           <img
-            src={`https://gateway.pinata.cloud/ipfs/${profilePic.substring(7)}`}
+            src={`https://gateway.pinata.cloud/ipfs/${profilePic.substring(6)}`}
             alt="Profile"
           />
         )}
