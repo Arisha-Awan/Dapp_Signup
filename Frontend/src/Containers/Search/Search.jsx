@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { Navbar, Loader, SearchCard } from "../../Components/Index";
-import './Search.css';
+import "./Search.css";
 
 const Search = () => {
   const navigate = useNavigate();
@@ -18,6 +18,7 @@ const Search = () => {
     contract,
     userList,
     getAllAppUser,
+    currentUserProfile,
   } = useContext(InscribleContext);
 
   const notify = (msg) => toast.error(msg);
@@ -60,7 +61,6 @@ const Search = () => {
         <>
           <Navbar />
           <div className="search-main-container">
-
             <div className="search-input-container">
               <span>Search</span>
               <div className="search-bar-container">
@@ -77,7 +77,6 @@ const Search = () => {
               <Loader />
             ) : userList.length > 0 ? (
               <>
-
                 {userList
                   .filter((user) =>
                     user.username.toLowerCase().includes(query.toLowerCase())
@@ -94,6 +93,8 @@ const Search = () => {
                       key={item.id}
                       filteruser={item.username}
                       filterUserAdress={item.address}
+                      profilePic={item.profilePic}
+                      {...console.log(item.profilePic)}
                     />
                   ))}
               </>

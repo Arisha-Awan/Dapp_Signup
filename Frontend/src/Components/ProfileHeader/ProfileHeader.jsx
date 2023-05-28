@@ -4,7 +4,7 @@ import { ProfilePosts, ProfileUserCard } from "../Index";
 import { useParams } from "react-router-dom";
 import { InscribleContext } from "../../Context/Context";
 
-const ProfileHeader = ({ }) => {
+const ProfileHeader = ({}) => {
   const [isPost, setIsPost] = useState(true);
   const [isFollower, setIsFollower] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -19,6 +19,7 @@ const ProfileHeader = ({ }) => {
     contract,
     getMyProfilePost,
     myProfilePosts,
+    currentUserProfile,
   } = useContext(InscribleContext);
 
   const getFollowers = async () => {
@@ -52,8 +53,9 @@ const ProfileHeader = ({ }) => {
     getMyProfilePost(address);
   }, [connectedAccount, contract]);
 
-  const { username, address } = useParams();
-
+  const { username, address, profilePic } = useParams();
+  console.log("profilePic");
+  console.log("ProfileHeader", profilePic);
   // Function to handle the follow/unfollow action
   const handleFollowToggle = async () => {
     if (isFollowingBtn) {
@@ -74,11 +76,10 @@ const ProfileHeader = ({ }) => {
       <div className="profile-header">
         <div className="profile-header_image">
           <img
-            src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?
-                        ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=
-                        format&fit=crop&w=1170&q=80"
-            alt="Pofile"
+            src={`https://gateway.pinata.cloud/ipfs/${profilePic.substring(7)}`}
+            alt="Profile"
           />
+         {console.log("Hedaer", profilePic)};
         </div>
         <div className="profile-header_content">
           <div className="profile-header_content-name-edit">

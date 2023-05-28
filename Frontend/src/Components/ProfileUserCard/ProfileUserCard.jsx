@@ -3,7 +3,7 @@ import "./ProfileUserCard.css";
 import { UnFollowModal } from "../Index";
 import { useNavigate } from "react-router-dom";
 import { InscribleContext } from "../../Context/Context";
-const ProfileUserCard = ({ userName, profilePic, address }) => {
+const ProfileUserCard = ({ userName, address }) => {
   const [isUnFollowModalOpen, setIsUnFollowModalOpen] = useState(false);
   const {
     checkAlreadyFriend,
@@ -15,8 +15,12 @@ const ProfileUserCard = ({ userName, profilePic, address }) => {
   const [isFollowingBtnProfile, setIsFollowingBtnProfile] = useState(false);
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate(`/profile/${address}/${userName}/`);
+    navigate(
+      `/profile/${address}/${userName}/${encodeURIComponent(profilePic)}`
+    );
   };
+  const [profilePic, setProfilePic] = useState("");
+
   useEffect(() => {
     const checkFriends = async () => {
       if (!contract) {
@@ -32,6 +36,19 @@ const ProfileUserCard = ({ userName, profilePic, address }) => {
     checkFriends();
   }, [connectedAccount, contract]);
 
+  useEffect(() => {
+    const fetchProfilePic = async () => {
+      try {
+        const profilePic = await contract.getProfilePic(address);
+        setProfilePic(profilePic);
+        console.log("UserCard", profilePic);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchProfilePic();
+  }, [address]);
   const handleFollowingToggle = () => {
     if (isFollowingBtnProfile) {
       // Perform the unfollow action
@@ -60,7 +77,7 @@ const ProfileUserCard = ({ userName, profilePic, address }) => {
       <div className="profile-usercard">
         <div className="profiel-usercard-main-info">
           <img
-            src={profilePic}
+            src={`https://gateway.pinata.cloud/ipfs/${profilePic.substring(6)}`}
             alt="Profile"
             className="profile-usercard-pic"
           />

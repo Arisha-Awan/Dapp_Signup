@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./MyProfileUserCard.css";
 import { UnFollowModal } from "../Index";
 import { RemoveFollowerModal } from "../Index";
@@ -6,20 +6,39 @@ import { useNavigate } from "react-router-dom";
 import { InscribleContext } from "../../Context/Context";
 const MyProfileUserCard = ({
   userName,
-  profilePic,
   address,
   followingBtn,
   getFollowersList,
   getMyFollowingsList,
 }) => {
-  const { removeFriends, removeFollower } = useContext(InscribleContext);
+  const { removeFriends, removeFollower, contract } =
+    useContext(InscribleContext);
+  const [profilePic, setProfilePic] = useState("");
+
   const navigate = useNavigate();
   const [isUnFollowModalOpen, setIsUnFollowModalOpen] = useState(false);
   const [isFollowerRemoveModalOpen, setIsFollowerRemoveModalOpen] =
     useState(false);
+
   const handleClick = () => {
-    navigate(`/profile/${address}/${userName}/`);
+    navigate(
+      `/profile/${address}/${userName}/${encodeURIComponent(profilePic)}`
+    );
   };
+  useEffect(() => {
+    const fetchProfilePic = async () => {
+      try {
+        const profilePic = await contract.getProfilePic(address);
+        setProfilePic(profilePic);
+        console.log("UserCard", profilePic);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchProfilePic();
+  }, [address]);
+
   const btnHandler = () => {
     if (followingBtn) {
       setIsUnFollowModalOpen(true);
@@ -56,7 +75,7 @@ const MyProfileUserCard = ({
       <div className="profile-usercard">
         <div className="profiel-usercard-main-info">
           <img
-            src={profilePic}
+            src={`https://gateway.pinata.cloud/ipfs/${profilePic.substring(6)}`}
             alt="Profile"
             className="profile-usercard-pic"
           />

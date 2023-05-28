@@ -25,7 +25,11 @@ function App() {
         <Route path="/create" element={<Create />}></Route>
         <Route path="/search" element={<Search />}></Route>
         <Route path="/profile" element={<MyProfile />}></Route>
-        <Route path="/profile/:address/:username" element={<Profile />}></Route>
+
+        <Route
+          path="/profile/:address/:username/:profilePic"
+          element={<Profile />}
+        ></Route>
         <Route path="/message" element={<Message />}></Route>
         <Route path="/edit" element={<ProfilePic />}></Route>
       </Routes>

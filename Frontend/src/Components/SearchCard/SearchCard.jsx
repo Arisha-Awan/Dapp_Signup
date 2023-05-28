@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import './SearchCard.css';
+import "./SearchCard.css";
 
 const SearchCard = ({
   username,
@@ -12,17 +12,27 @@ const SearchCard = ({
   query,
   filteruser,
   filterUserAdress,
+  profilePic,
 }) => {
   const navigate = useNavigate();
-  
+
   const handleClick = () => {
-    navigate(`/profile/${address}/${username}/`);
+    navigate(
+      `/profile/${address}/${username}/${encodeURIComponent(profilePic)}`
+    );
   };
 
   return (
     <div className="search-card">
       <div className="search-card-header" onClick={handleClick}>
-        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="" />
+        {profilePic && (
+          <img
+            src={`https://gateway.pinata.cloud/ipfs/${profilePic.substring(7)}`}
+            alt="Profile"
+          />
+        )}
+        {console.log(profilePic)}
+
         <div className="search-card-info">
           <h5>{username}</h5>
           <small>{address}</small>

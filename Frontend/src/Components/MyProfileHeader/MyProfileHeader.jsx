@@ -17,7 +17,7 @@ const MyProfileHeader = ({}) => {
     myProfilePosts,
     currentUsername,
     GetUserName,
-    currentUserProfile
+    currentUserProfile,
   } = useContext(InscribleContext);
 
   const navigate = useNavigate();
@@ -49,7 +49,9 @@ const MyProfileHeader = ({}) => {
       <div className="profile-header">
         <div className="profile-header_image">
           <img
-            src={`https://gateway.pinata.cloud/ipfs/${currentUserProfile.substring(6)}`}
+            src={`https://gateway.pinata.cloud/ipfs/${currentUserProfile.substring(
+              6
+            )}`}
             alt="Pofile"
           />
         </div>
@@ -58,7 +60,9 @@ const MyProfileHeader = ({}) => {
             <p id="profile-name" className="bold-5 size-l">
               {currentUsername}
             </p>
-            <button className="btn-Edit" onClick={()=>navigate('/edit')}>Edit</button>
+            <button className="btn-Edit" onClick={() => navigate("/edit")}>
+              Edit
+            </button>
           </div>
           <div className="profile-header_content-info">
             <div>

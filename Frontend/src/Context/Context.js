@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
-import { contractABI, contractAddress } from './Constants';
+import { contractABI, contractAddress } from "./Constants";
 
 //CREATING CONTEXT
 export const InscribleContext = React.createContext();
-
 
 const FetchContract = (signerProvider) =>
   new ethers.Contract(contractAddress, contractABI, signerProvider);
@@ -23,12 +22,10 @@ const CreateContract = async () => {
     const contract = FetchContract(signer);
 
     return contract;
-  }
-  catch (error) {
+  } catch (error) {
     console.log(error);
   }
 };
-
 
 //CREATING CONTEXT PROVIDER
 export const InscribleProvider = ({ children }) => {
@@ -50,6 +47,7 @@ export const InscribleProvider = ({ children }) => {
   const [followerLists, setfollowerLists] = useState([]);
   const [followingLists, setfollowingLists] = useState([]);
   const [error, setError] = useState("");
+  const [postUserPic, setPostUserPic] = useState("");
 
   //FUNCTION TO GET THE CONNECTED ACCOUNT
   const ConnectWallet = async () => {
@@ -75,7 +73,7 @@ export const InscribleProvider = ({ children }) => {
       const firstAccount = accounts[0];
       setConnectedAccount(firstAccount);
       const _contract = await CreateContract();
-      setContract(_contract);      
+      setContract(_contract);
       setCurrentUsername(firstAccount.username);
     } catch (error) {
       console.log(error);
@@ -85,11 +83,9 @@ export const InscribleProvider = ({ children }) => {
   //ADD YOUR FRIENDS
   const addFriends = async ({ name, accountAddress }) => {
     try {
-
       // const contract = await ConnectWallet();
       const addMyFriend = await contract.addFriend(accountAddress);
       await addMyFriend.wait();
-
     } catch (error) {
       setError("Something went wrong while adding friends, try again");
     }
@@ -101,7 +97,6 @@ export const InscribleProvider = ({ children }) => {
     accountAddress,
   }) => {
     try {
-      
       const checkFriend = await contract.checkAlreadyFriends(
         connectedAccountAddress,
         accountAddress
@@ -191,13 +186,20 @@ export const InscribleProvider = ({ children }) => {
   };
 
   //TO GET A USERS NAME and PROFILE
-  const GetUserName = async (account)=>{
+  const GetUserName = async (account) => {
     const _user = await contract.getUsername(account);
     setCurrentUsername(_user);
     const _profile = await contract.getProfilePic(account);
     setCurrentUserProfile(_profile);
   };
-
+  const GetProfilePic = async (account) => {
+    try {
+      const profilePic = await contract.getProfilePic(account);
+      setPostUserPic(profilePic);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   //TO UPLOAD A NEW POST BY A USER
   const UploadPost = async (imageHash, caption, imageText) => {
     setIsLoading(true);
@@ -234,7 +236,7 @@ export const InscribleProvider = ({ children }) => {
   };
 
   //SEND MESSAGE TO YOUR FRIEND
-  const SendMessage = async (msg, address ) => {
+  const SendMessage = async (msg, address) => {
     try {
       const addMessage = await contract.sendMessage(address, msg);
       setIsLoading(true);
@@ -288,6 +290,7 @@ export const InscribleProvider = ({ children }) => {
         checkAlreadyFriend,
         removeFollower,
         getMyProfilePost,
+        GetProfilePic,
         isMetamask,
         connectedAccount,
         contract,
@@ -304,7 +307,9 @@ export const InscribleProvider = ({ children }) => {
         myProfilePosts,
         followerLists,
         followingLists,
-        currentUserProfile
+        currentUserProfile,
+        setPostUserPic,
+        postUserPic,
       }}
     >
       {children}
