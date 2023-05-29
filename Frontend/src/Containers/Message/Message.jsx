@@ -51,7 +51,7 @@ const Message = () => {
         await getAllAppUser();
         await GetUserName(connectedAccount);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     fetchdata();
@@ -63,11 +63,11 @@ const Message = () => {
         const profilePic = await contract.getProfilePic(messangerAddress);
         setPostUserPic(profilePic);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     fetchProfilePic();
-  }, []);
+  }, [messangerAddress]);
 
   const handleMessage = (e) => {
     const value = e.target.value;
@@ -119,10 +119,11 @@ const Message = () => {
             <div className="user-card-header">
               <img
                 src={`https://gateway.pinata.cloud/ipfs/${postUserPic.substring(
-                  6
+                  7
                 )}`}
                 alt=""
               />
+
               <div className="user-card-info">
                 <h5>{messangerName}</h5>
                 <small>{messangerAddress}</small>
@@ -152,7 +153,7 @@ const Message = () => {
                         <>
                           <img
                             src={`https://gateway.pinata.cloud/ipfs/${postUserPic.substring(
-                              6
+                              7
                             )}`}
                             alt=""
                             className="chat-img"
@@ -165,7 +166,7 @@ const Message = () => {
                         <>
                           <img
                             src={`https://gateway.pinata.cloud/ipfs/${currentUserProfile.substring(
-                              6
+                              7
                             )}`}
                             alt=""
                             className="chat-img"

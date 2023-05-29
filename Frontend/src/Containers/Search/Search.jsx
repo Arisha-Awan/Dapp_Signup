@@ -86,15 +86,14 @@ const Search = () => {
                       user.accountAddress.toLowerCase() !==
                       connectedAccount.toLowerCase()
                   )
-                  .map((item) => (
+                  .map((item, i) => (
                     <SearchCard
                       username={item.username}
                       address={item.accountAddress}
-                      key={item.id}
+                      key={i}
                       filteruser={item.username}
                       filterUserAdress={item.address}
                       profilePic={item.profilePic}
-                      {...console.log(item.profilePic)}
                     />
                   ))}
               </>
