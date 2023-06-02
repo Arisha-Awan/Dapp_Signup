@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import "./PostCard.css";
+import { ethers } from "ethers";
 import { InscribleContext } from "../../Context/Context";
 import React, { useState, useEffect, useContext } from "react";
 
@@ -10,23 +11,60 @@ const PostCard = ({
   caption,
   imageText,
   likeCount,
-  currentUserProfile,
+  postId,
+  tipAmount,
 }) => {
-  const { contract } = useContext(InscribleContext);
+  const { connectedAccount, contract } = useContext(InscribleContext);
   const navigate = useNavigate();
   const [postUserPic, setPostUserPic] = useState("");
 
+  const [tipAmountState, setTipAmountState] = useState(0);
+  const [likeCountState, setLikeCountState] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
+
+  // useEffect(() => {
+  //   const fetchProfilePic = async () => {
+  //     try {
+  //       const profilePic = await contract.getProfilePic(address);
+  //       setPostUserPic(profilePic);
+  //       await LikedByExists();
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchProfilePic();
+
+  //   console.log("likeeeeeeeeeeeeeeeeeeeeeeee" + isLiked);
+  //   if (isLiked) {
+  //     document.getElementById("heart").setAttribute("fill", "red");
+  //     document.getElementById("heart").setAttribute("stroke", "red");
+  //   } else {
+  //     document.getElementById("heart").setAttribute("fill", "white");
+  //     document.getElementById("heart").setAttribute("stroke", "black");
+  //   }
+  //   setTipAmountState(parseInt(tipAmount._hex, 16) / 10 ** 18);
+  //   setLikeCountState(likeCount.toNumber());
+  // }, [connectedAccount, contract]);
+
   useEffect(() => {
-    const fetchProfilePic = async () => {
+    const fetchData = async () => {
       try {
         const profilePic = await contract.getProfilePic(address);
         setPostUserPic(profilePic);
+
+        const isLikeByUser = await contract.LikedByExists(postId);
+        setIsLiked(isLikeByUser);
       } catch (error) {
         console.log(error);
       }
     };
-    fetchProfilePic();
-  }, []);
+
+    fetchData();
+
+    setTipAmountState(parseInt(tipAmount._hex, 16) / 10 ** 18);
+    setLikeCountState(likeCount.toNumber());
+    console.log("likeeeeee Count " + likeCount.toNumber());
+  }, [connectedAccount, contract]);
 
   const handleClick = () => {
     navigate(
@@ -34,14 +72,33 @@ const PostCard = ({
     );
   };
 
-  const handleLike = (e) => {
-    const state = document.getElementById("heart").getAttribute("fill");
-    if (state === "white") {
-      document.getElementById("heart").setAttribute("fill", "red");
-      document.getElementById("heart").setAttribute("stroke", "red");
-    } else {
-      document.getElementById("heart").setAttribute("fill", "white");
-      document.getElementById("heart").setAttribute("stroke", "black");
+  const tip = async (post_id) => {
+    // tip post owner
+
+    await (
+      await contract.tipPostOwner(post_id, {
+        value: ethers.utils.parseEther("0.00001"),
+      })
+    ).wait();
+
+    const tipAmount = await contract.getTipAmountByPostId(post_id);
+    // console.log("Data:", parseInt(tipAmount._hex, 16) / 10 ** 18);
+    setTipAmountState(parseInt(tipAmount._hex, 16) / 10 ** 18);
+  };
+
+  const Handlelike = async (postId) => {
+    try {
+      if (isLiked) {
+        await contract.LikePostDecrement(postId);
+        setLikeCountState((prevState) => prevState - 1);
+        setIsLiked(false);
+      } else {
+        await contract.LikePostIncrement(postId);
+        setLikeCountState((prevState) => prevState + 1);
+        setIsLiked(true);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -83,17 +140,26 @@ const PostCard = ({
           height="21"
           className="heart"
           viewBox="0 0 20 20"
-          onClick={handleLike}
+          onClick={() => Handlelike(postId)}
         >
           <path
             d="m 10 5 a 1 1 0 0 0 -8 5 l 8 9 l 8 -9 a -1 -1 0 0 0 -8 -5"
-            fill="white"
-            stroke="black"
+            fill={isLiked ? "red" : "white"}
+            stroke={isLiked ? "red" : "black"}
             id="heart"
           ></path>
         </svg>
-        <button className="card-content-tip">Tip 0.1eth</button>
-        <p>{likeCount}</p>
+
+        <button
+          className="card-content-tip"
+          onClick={() => {
+            tip(postId);
+          }}
+        >
+          Tip 0.1eth
+        </button>
+        <small className="tip">{tipAmountState}</small>
+        <p>{likeCountState}</p>
         <h5 onClick={handleClick} className="cursor">
           {username}
         </h5>

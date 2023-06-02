@@ -218,9 +218,40 @@ export const InscribleProvider = ({ children }) => {
   };
 
   //TO GET POSTS OF A SINGLE USER
+  // const GetPostByUser = async (address) => {
+  //   setIsLoading(true);
+  //   const Posts = await contract.getSingleUserPost(address);
+  //   setSingleUserPost(Posts);
+  //   setIsLoading(false);
+  // };
+
+  //TO GET POSTS OF A SINGLE USER upgraded
   const GetPostByUser = async (address) => {
+    console.log(contract);
+    console.log(address);
+    console.log(connectedAccount);
     setIsLoading(true);
-    const Posts = await contract.getSingleUserPost(address);
+
+    //const followingsCount = await contract.getMyFollowingsList(address);
+    //console.log("FollowingsCount.....",followingsCount);
+
+    let Posts = [];
+    let connectedAccountPost = await contract.getOneUserPosts(connectedAccount);
+    for (let j = 0; j < connectedAccountPost.length; j++) {
+      Posts.push(connectedAccountPost[j]);
+    }
+    const followingsList = await contract.getMyFollowingsList(address);
+    console.log("followings address", followingsList);
+
+    for (let i = 0; i < followingsList.length; i++) {
+      //let PostsOfOneUser = await contract.getOneUserPosts(followingsList[i]);
+      let PostsOfOneUser = await contract.getOneUserPosts(
+        followingsList[i].pubkey
+      );
+      for (let j = 0; j < PostsOfOneUser.length; j++) {
+        Posts.push(PostsOfOneUser[j]);
+      }
+    }
     setSingleUserPost(Posts);
     setIsLoading(false);
   };
@@ -250,7 +281,7 @@ export const InscribleProvider = ({ children }) => {
 
   //RETURN POST OF A SPECIFIC USER
   const getMyProfilePost = async (address) => {
-    const Posts = await contract.getMyProfilePost(address);
+    const Posts = await contract.getOneUserPosts(address);
     setmyProfilePosts(Posts);
   };
 

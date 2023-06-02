@@ -38,7 +38,7 @@ const ProfilePosts = () => {
         </div>
       </div>
       {isUserPosts &&
-        myProfilePosts.map((item) => {
+        myProfilePosts.map((item, i) => {
           return (
             <PostCard
               username={item.createrName}
@@ -46,14 +46,13 @@ const ProfilePosts = () => {
               file={item.imageHash}
               caption={item.caption}
               imageText={item.imageText}
-              likeCount={item.likeCount._hex}
-              key={item.id}
+              likeCount={item.likeCount}
+              tipAmount={item.tipAmount}
+              key={i}
               currentUserProfile={currentUserProfile}
             />
           );
         })}
-
-      
     </>
   );
 };

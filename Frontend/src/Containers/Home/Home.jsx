@@ -16,7 +16,6 @@ const Home = () => {
     ConnectWallet,
     contract,
     GetUserName,
-    currentUserProfile,
   } = useContext(InscribleContext);
 
   const notify = (msg) => toast.error(msg);
@@ -62,7 +61,10 @@ const Home = () => {
           {isLoading ? (
             <Loader />
           ) : singleUserPost.length > 0 ? (
-            singleUserPost.map((item) => {
+            singleUserPost.map((item, i) => {
+              {
+                console.log(singleUserPost);
+              }
               return (
                 <PostCard
                   username={item.createrName}
@@ -70,9 +72,13 @@ const Home = () => {
                   file={item.imageHash}
                   caption={item.caption}
                   imageText={item.imageText}
-                  likeCount={item.likeCount._hex}
-                  key={item.id}
-                  currentUserProfile={currentUserProfile}
+                  likeCount={item.likeCount}
+                  postId={item.id.toNumber()}
+                  key={i}
+                  tipAmount={item.tipAmount}
+                  {...console.log(
+                    "tttttttttt" + typeof item.likeCount.toNumber()
+                  )}
                 />
               );
             })
