@@ -6,4 +6,15 @@ import SignIn from "./SignIn/SignIn";
 import Search from "./Search/Search";
 import Message from "./Message/Message";
 import MyProfile from "./MyProfile/MyProfile";
-export { Home, Profile, SignUp, Create, SignIn, Search, Message, MyProfile };
+import Explore from "./Explore/Explore";
+export {
+  Home,
+  Profile,
+  SignUp,
+  Create,
+  SignIn,
+  Search,
+  Message,
+  MyProfile,
+  Explore,
+};

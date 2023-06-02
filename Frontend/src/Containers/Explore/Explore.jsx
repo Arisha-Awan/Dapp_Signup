@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./Home.css";
 import { PostCard, Navbar, Loader } from "../../Components/Index";
 import { InscribleContext } from "../../Context/Context";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
-const Home = () => {
+const Explore = () => {
   const navigate = useNavigate();
   const {
     GetPostByUser,
@@ -16,6 +15,8 @@ const Home = () => {
     ConnectWallet,
     contract,
     GetUserName,
+    GetAllPosts,
+    allPosts,
   } = useContext(InscribleContext);
 
   const notify = (msg) => toast.error(msg);
@@ -27,7 +28,7 @@ const Home = () => {
 
     const fetchdata = async () => {
       await ConnectWallet();
-      await GetPostByUser(connectedAccount);
+      await GetAllPosts();
       await GetUserName(connectedAccount);
     };
 
@@ -36,7 +37,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchdata = async () => {
-      await GetPostByUser(connectedAccount);
+      await GetAllPosts();
       await GetUserName(connectedAccount);
     };
 
@@ -60,10 +61,10 @@ const Home = () => {
           <Navbar />
           {isLoading ? (
             <Loader />
-          ) : singleUserPost.length > 0 ? (
-            singleUserPost.map((item, i) => {
+          ) : allPosts.length > 0 ? (
+            allPosts.map((item, i) => {
               {
-                console.log(singleUserPost);
+                console.log(allPosts);
               }
               return (
                 <PostCard
@@ -76,6 +77,9 @@ const Home = () => {
                   postId={item.id.toNumber()}
                   key={i}
                   tipAmount={item.tipAmount}
+                  {...console.log(
+                    "tttttttttt" + typeof item.likeCount.toNumber()
+                  )}
                 />
               );
             })
@@ -90,4 +94,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Explore;

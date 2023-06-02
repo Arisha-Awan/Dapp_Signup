@@ -211,7 +211,7 @@ export const InscribleProvider = ({ children }) => {
   //TO GET ALL POSTS OF APP
   const GetAllPosts = async () => {
     setIsLoading(true);
-    const Posts = await contract.GetAllPosts();
+    const Posts = await contract.getAllPosts();
 
     setAllPosts(Posts);
     setIsLoading(false);
@@ -252,7 +252,16 @@ export const InscribleProvider = ({ children }) => {
         Posts.push(PostsOfOneUser[j]);
       }
     }
-    setSingleUserPost(Posts);
+
+    let dataCopy = [...Posts];
+
+    // sorting posts in descending order
+    dataCopy.sort((a, b) => {
+      let val1 = b.likeCount.toNumber();
+      let val2 = a.likeCount.toNumber();
+      return val1 - val2;
+    });
+    setSingleUserPost(dataCopy);
     setIsLoading(false);
   };
 
