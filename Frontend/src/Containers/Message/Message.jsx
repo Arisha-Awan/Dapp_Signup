@@ -171,9 +171,7 @@ const Message = () => {
                             alt=""
                             className="chat-img"
                           />
-                          {console.log(
-                            "messssageeeeeeeeeeeeee" + currentUserProfile
-                          )}
+
                           <div className="info">
                             <span>{currentUsername}</span>
                           </div>

@@ -17,34 +17,11 @@ const PostCard = ({
   const { connectedAccount, contract } = useContext(InscribleContext);
   const navigate = useNavigate();
   const [postUserPic, setPostUserPic] = useState("");
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
 
   const [tipAmountState, setTipAmountState] = useState(0);
   const [likeCountState, setLikeCountState] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
-
-  // useEffect(() => {
-  //   const fetchProfilePic = async () => {
-  //     try {
-  //       const profilePic = await contract.getProfilePic(address);
-  //       setPostUserPic(profilePic);
-  //       await LikedByExists();
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   fetchProfilePic();
-
-  //   console.log("likeeeeeeeeeeeeeeeeeeeeeeee" + isLiked);
-  //   if (isLiked) {
-  //     document.getElementById("heart").setAttribute("fill", "red");
-  //     document.getElementById("heart").setAttribute("stroke", "red");
-  //   } else {
-  //     document.getElementById("heart").setAttribute("fill", "white");
-  //     document.getElementById("heart").setAttribute("stroke", "black");
-  //   }
-  //   setTipAmountState(parseInt(tipAmount._hex, 16) / 10 ** 18);
-  //   setLikeCountState(likeCount.toNumber());
-  // }, [connectedAccount, contract]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,6 +31,12 @@ const PostCard = ({
 
         const isLikeByUser = await contract.LikedByExists(postId);
         setIsLiked(isLikeByUser);
+
+        if (connectedAccount.toLowerCase() === address.toLowerCase()) {
+          setButtonDisabled(true);
+        } else {
+          setButtonDisabled(false);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -63,7 +46,7 @@ const PostCard = ({
 
     setTipAmountState(parseInt(tipAmount._hex, 16) / 10 ** 18);
     setLikeCountState(likeCount.toNumber());
-    console.log("likeeeeee Count " + likeCount.toNumber());
+    // console.log("likeeeeee Count " + likeCount.toNumber());
   }, [connectedAccount, contract]);
 
   const handleClick = () => {
@@ -155,6 +138,7 @@ const PostCard = ({
           onClick={() => {
             tip(postId);
           }}
+          disabled={isButtonDisabled}
         >
           Tip 0.1eth
         </button>
