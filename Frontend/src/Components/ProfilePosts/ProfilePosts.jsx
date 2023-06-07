@@ -8,6 +8,7 @@ const ProfilePosts = () => {
 
   const [isUserPosts, setIsUserPosts] = useState(true);
   const [isSavedPosts, setIsSavedPosts] = useState(false);
+  const [data, setData] = useState(null);
 
   return (
     <>
@@ -37,22 +38,44 @@ const ProfilePosts = () => {
           <span className="selector-text">Saved</span>
         </div>
       </div>
-      {isUserPosts &&
-        myProfilePosts.map((item, i) => {
-          return (
+      <div className="profile-grid">
+        {isUserPosts &&
+          myProfilePosts.map((item, i) => {
+            return (
+              <div className="cell" onClick={() => setData(item)} key={i}>
+                <img src={`https://gateway.pinata.cloud/ipfs/${item.imageHash.substring(
+                  6
+                )}`} alt="" />
+              </div>
+            );
+          })}
+      </div>
+
+      {
+        data && (
+          <div className="post-con">
+            <span
+              className="material-symbols-outlined close"
+              onClick={() => {
+                setData(null)
+              }}
+            >
+              close
+            </span>
             <PostCard
-              username={item.createrName}
-              address={item.userAddress}
-              file={item.imageHash}
-              caption={item.caption}
-              imageText={item.imageText}
-              likeCount={item.likeCount}
-              tipAmount={item.tipAmount}
-              key={i}
+              username={data.createrName}
+              address={data.userAddress}
+              file={data.imageHash}
+              caption={data.caption}
+              imageText={data.imageText}
+              likeCount={data.likeCount}
+              postId={data.id.toNumber()}
+              tipAmount={data.tipAmount}
               currentUserProfile={currentUserProfile}
             />
-          );
-        })}
+          </div>
+        )
+      }
     </>
   );
 };

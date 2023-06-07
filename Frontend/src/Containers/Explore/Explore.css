@@ -1,0 +1,48 @@
+.grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 750px;
+    gap: 10px;
+    height: fit-content;
+    margin: 25px;
+}
+
+.cell{height: 250px; cursor: pointer;}
+
+.cell>img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.post-con{
+    width: fit-content;
+    height: fit-content;
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid rgb(173, 173, 173);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.close{
+    position: absolute;
+    right: 20px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+@media screen and (max-width: 930px) {
+    .grid{
+        width: 600px
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .grid{
+        width: 90vw;
+    }
+}

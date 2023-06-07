@@ -46,7 +46,7 @@ const PostCard = ({
 
     setTipAmountState(parseInt(tipAmount._hex, 16) / 10 ** 18);
     setLikeCountState(likeCount.toNumber());
-    // console.log("likeeeeee Count " + likeCount.toNumber());
+    console.log("callledddddddd", username, address, file, caption, imageText, likeCount, postId, tipAmount);
   }, [connectedAccount, contract]);
 
   const handleClick = () => {

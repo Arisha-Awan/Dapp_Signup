@@ -3,6 +3,7 @@ import { PostCard, Navbar, Loader } from "../../Components/Index";
 import { InscribleContext } from "../../Context/Context";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import './Explore.css';
 
 const Explore = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const Explore = () => {
 
   const notify = (msg) => toast.error(msg);
   const [isSigned, setIsSigned] = useState(false);
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     const state = getSignInState();
@@ -62,34 +64,50 @@ const Explore = () => {
           {isLoading ? (
             <Loader />
           ) : allPosts.length > 0 ? (
-            allPosts.map((item, i) => {
-              {
-                console.log(allPosts);
-              }
-              return (
-                <PostCard
-                  username={item.createrName}
-                  address={item.userAddress}
-                  file={item.imageHash}
-                  caption={item.caption}
-                  imageText={item.imageText}
-                  likeCount={item.likeCount}
-                  postId={item.id.toNumber()}
-                  key={i}
-                  tipAmount={item.tipAmount}
-                  {...console.log(
-                    "tttttttttt" + typeof item.likeCount.toNumber()
-                  )}
-                />
-              );
-            })
+            <div className="grid">
+              {allPosts.map((item, i) => {
+                return (
+                  <div className="cell" onClick={() => setData(item)} key={i}>
+                    <img src={`https://gateway.pinata.cloud/ipfs/${item.imageHash.substring(
+                      6
+                    )}`} alt="" />
+                  </div>
+                );
+              })}
+            </div>
           ) : (
             noPostMsg()
           )}
         </>
       ) : (
         backToSignIn()
-      )}
+      )
+      }
+
+      {
+        data && (
+          <div className="post-con">
+            <span
+              className="material-symbols-outlined close"
+              onClick={() => {
+                setData(null)
+              }}
+            >
+              close
+            </span>
+            <PostCard
+              username={data.createrName}
+              address={data.userAddress}
+              file={data.imageHash}
+              caption={data.caption}
+              imageText={data.imageText}
+              likeCount={data.likeCount}
+              postId={data.id.toNumber()}
+              tipAmount={data.tipAmount}
+            />
+          </div>
+        )
+      }
     </>
   );
 };
