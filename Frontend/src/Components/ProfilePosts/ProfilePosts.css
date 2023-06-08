@@ -20,11 +20,11 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     width: 100%;
-    gap: 10px;
+    /* gap: 2px; */
     height: fit-content;
 }
 
-.cell{height: 250px; cursor: pointer;}
+.cell{height: 250px; cursor: pointer;border: 1px solid rgb(173, 173, 173);}
 
 .cell>img{
     width: 100%;
@@ -54,7 +54,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%) translateY(-40%);
 }
 
 .close{
