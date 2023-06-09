@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import "./Navbar.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { SearchCard } from "../Index";
 import { InscribleContext } from "../../Context/Context";
 
@@ -11,8 +11,10 @@ const Navbar = ({ childern }) => {
     connectedAccount,
     currentUsername,
     GetUserName,
+    signInState
   } = useContext(InscribleContext);
 
+  const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [search, setSearch] = useState(false);
 
@@ -176,6 +178,10 @@ const Navbar = ({ childern }) => {
               </li>
             ))}
           </ul>
+          <button className="logout-nav" onClick={() => {
+            signInState(false);
+            navigate('/');
+          }}>Log Out</button>
         </div>
       </div>
 
@@ -198,6 +204,12 @@ const Navbar = ({ childern }) => {
               </li>
             ))}
           </ul>
+          <span class="material-symbols-outlined logout-tab" onClick={() => {
+            signInState(false);
+            navigate('/');
+          }}>
+            logout
+          </span>
         </div>
       </div>
 
