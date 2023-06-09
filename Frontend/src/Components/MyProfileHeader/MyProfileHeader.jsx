@@ -18,6 +18,7 @@ const MyProfileHeader = ({}) => {
     currentUsername,
     GetUserName,
     currentUserProfile,
+    signInState
   } = useContext(InscribleContext);
 
   const navigate = useNavigate();
@@ -59,6 +60,10 @@ const MyProfileHeader = ({}) => {
             <p id="profile-name" className="bold-5 size-l">
               {currentUsername}
             </p>
+            <button className="logout" onClick={()=>{
+              signInState(false);
+              navigate('/');
+            }}>Log Out</button>
           </div>
           <div className="profile-header_content-info">
             <div>

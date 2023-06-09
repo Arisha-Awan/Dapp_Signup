@@ -111,6 +111,15 @@
     cursor: pointer;
 }
 
+.logout{
+    border: none;
+    width: 80px;
+    height: 30px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
 @media screen and (max-width: 500px) {
     .profile-header_image {
         width: 80px;
